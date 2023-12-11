@@ -12,6 +12,12 @@ struct Mountain {
     height: u64,
 }
 
+impl Mountain{
+    fn cost_per_meter(&self) -> f32 {
+        self.cost / self.height as f32
+    }
+}
+
 fn build_skier(cool_name: String, secret_hand_shake: String) -> Skier {
     Skier {
         active: true,
@@ -65,4 +71,9 @@ fn main() {
     skier.days_on_hill += 1;
     skier2.days_on_hill += 1;
     println!("{} {}", skier.days_on_hill, skier2.days_on_hill);
+
+    println!(
+        "The cost per meter ratio for this hill is: {}",
+        sunshine.cost_per_meter()
+     );
 }
