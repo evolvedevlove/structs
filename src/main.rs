@@ -10,11 +10,20 @@ struct Mountain {
     nick_name: String,
     cost: f32,
     height: u64,
+    width: u64,
 }
 
 impl Mountain{
     fn cost_per_meter(&self) -> f32 {
         self.cost / self.height as f32
+    }
+
+    fn calculate_area(&self) -> u64 {
+        self.height * self.width
+    }
+
+    fn can_hold(&self, other: &Mountain) -> bool {
+        self.width > other.width && self.height > other.height
     }
 }
 
@@ -35,7 +44,8 @@ fn generate_mountain() -> Mountain {
         open: true,
         nick_name: String::from("temporary shred land"),
         cost: 100.23,
-        height: 2500,
+        height: 1000,
+        width: 1000,
     }
 }
 
@@ -65,6 +75,7 @@ fn main() {
         nick_name: String::from("sunny"),
         cost: generic_mountain.cost,
         height: 1070,
+        width: 4200,
     };
     println!("the best hill is {} and it is {} tall", sunshine.nick_name, sunshine.height);
 
@@ -109,4 +120,34 @@ fn main() {
     // now we start to encounter abstraction problems ---
     // should the mountain have a list of chairs and a list of gondolas on it?
     // probably - lets do that in the next session    
+
+    let nakiska = Mountain {
+        open: generic_mountain.open,
+        nick_name: String::from("nahtskismall"),
+        cost: 69.69,
+        height: 42,
+        width: 21,
+    };
+    // calculate the with area of the three mountains 
+    // and see if they can all fit in the biggest mountain
+    let area1 = nakiska.calculate_area();
+    let area2 = sunshine.calculate_area();
+    let area3 = lake_louise.calculate_area();
+    
+    println!("the areas are {area1} {area2} and {area3}");
+    if sunshine.can_hold(&nakiska) {
+        println!("woohoo");
+        let tmp_mountain = Mountain {
+            height: nakiska.height + lake_louise.height,
+            width: nakiska.width + lake_louise.width,
+            ..nakiska
+        };
+        if sunshine.can_hold(&tmp_mountain) {
+            println!("is this a strange way to do this?");
+        } else {
+            println!("hmmm");
+        }
+    } else {
+        println!("dang");
+    }
 }
